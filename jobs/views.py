@@ -10,6 +10,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib.admin.views.decorators import staff_member_required
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 
 from .models import Job, Application
 
@@ -154,6 +155,7 @@ def thank_you(request):
 
 
 @staff_member_required
+@xframe_options_sameorigin
 def download_resume(request, application_id):
     application = get_object_or_404(
         Application,
