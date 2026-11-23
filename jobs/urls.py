@@ -2,6 +2,13 @@
 from django.urls import path
 from . import views
 
+from django.contrib.sitemaps.views import sitemap
+from jobs.sitemaps import JobSitemap
+
+sitemaps = {
+    'jobs': JobSitemap,
+}
+
 urlpatterns = [
     path('', views.home, name='home'),
     path('jobs/', views.job_list, name='job_list'),
@@ -14,4 +21,12 @@ urlpatterns = [
         views.download_resume,
         name='download_resume'
     ),
+
+    path(
+        'sitemap.xml',
+        sitemap,
+        {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap'
+    ),
+    path('robots.txt', views.robots_txt, name='robots_txt'),
 ]

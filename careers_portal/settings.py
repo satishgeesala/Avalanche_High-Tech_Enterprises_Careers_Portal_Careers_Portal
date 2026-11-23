@@ -44,6 +44,9 @@ if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
         f"https://{os.getenv('RENDER_EXTERNAL_HOSTNAME')}"
     )    
 
+if os.getenv('RENDER'):
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -53,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'cloudinary_storage',
     'cloudinary',
     'jobs',

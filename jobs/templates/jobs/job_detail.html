@@ -6,6 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ job.title }} | Avalanche High-Tech Enterprises Careers </title> 
 
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "JobPosting",
+        "title": "{{ job.title|escapejs }}",
+        "description": "{{ job.description|striptags|escapejs }}",
+        "datePosted": "{{ job.created_at|date:'Y-m-d' }}",
+        "validThrough": "{{ job.closing_date|date:'Y-m-d' }}T23:59:59+05:30",
+        "employmentType": "{% if job.job_type == 'Internship' %}INTERN{% elif job.job_type == 'Full-time' %}FULL_TIME{% else %}OTHER{% endif %}",
+        "hiringOrganization": {
+            "@type": "Organization",
+            "name": "Avalanche High-Tech Enterprises"
+        },
+        "jobLocation": {
+            "@type": "Place",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "{{ job.location|escapejs }}",
+                "addressCountry": "IN"
+            }
+        }
+    }
+    </script>
+
     <link rel="stylesheet" href="{% static 'jobs/css/bootstrap.min.css' %}">
 </head>
 <body class="bg-light">

@@ -8,6 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.http import HttpResponse
+from django.urls import reverse
 from django.core.exceptions import PermissionDenied
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.clickjacking import xframe_options_sameorigin
@@ -208,3 +209,21 @@ def download_resume(request, application_id):
             'Unable to retrieve the resume. Please try again.',
             status=502
         )
+
+
+def robots_txt(request):
+    sitemap_url = request.build_absolute_uri(
+        reverse('django.contrib.sitemaps.views.sitemap')
+    )
+
+    content = f"""User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /resume/
+Disallow: /thank-you/
+Disallow: /jobs/*/apply/
+
+Sitemap: {sitemap_url}
+"""
+
+    return HttpResponse(content, content_type="text/plain")
