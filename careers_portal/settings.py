@@ -34,7 +34,7 @@ ALLOWED_HOSTS = config(
     cast=Csv()
 )
 
-if os.getenv('RENDER'):
+if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
     ALLOWED_HOSTS += [os.getenv('RENDER_EXTERNAL_HOSTNAME')]
 
 CSRF_TRUSTED_ORIGINS = []
@@ -107,13 +107,25 @@ WSGI_APPLICATION = 'careers_portal.wsgi.application'
 # Database
 
 
-if os.getenv('RENDER'):
+
+# Database
+
+if os.getenv('CI'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'ci_test.sqlite3',
+        }
+    }
+
+elif os.getenv('RENDER'):
     DATABASES = {
         'default': dj_database_url.config(
             conn_max_age=600,
             ssl_require=True
         )
     }
+
 else:
     DATABASES = {
         'default': {
